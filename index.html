@@ -15,6 +15,13 @@
       font-family: sans-serif;
     }
 
+    /* Header — initial height and animation defined here */
+    #header {
+      height: 60px;
+      overflow: hidden;
+      transition: height 0.4s ease;
+    }
+
     /* Section container styles — heights and overflow defined here */
     #s1 { height: 100vh; overflow: hidden; }
     #s2 { height: 100vh; overflow: hidden; }
@@ -25,6 +32,8 @@
 </head>
 <body>
 
+  <div id="header"></div>
+
   <div id="s1"></div>
   <div id="s2"></div>
   <div id="s3"></div>
@@ -32,12 +41,25 @@
   <div id="s5"></div>
 
   <script>
+    async function loadHeader() {
+      const res = await fetch('header.html');
+      const html = await res.text();
+      document.getElementById('header').innerHTML = html;
+
+      // small delay so transition kicks in after style is registered
+      setTimeout(() => {
+        const finalHeight = document.getElementById('header').dataset.height;
+        document.getElementById('header').style.height = finalHeight;
+      }, 50);
+    }
+
     async function loadSection(id, file) {
       const res = await fetch(file);
       const html = await res.text();
       document.getElementById(id).innerHTML = html;
     }
 
+    loadHeader();
     loadSection('s1', 'sections/s1.html');
     loadSection('s2', 'sections/s2.html');
     loadSection('s3', 'sections/s3.html');
